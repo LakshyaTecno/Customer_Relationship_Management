@@ -1,6 +1,14 @@
 const User = require("../models/userSchema");
 const constants = require("../utils/constants");
 
+const isValidEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
 const validateSignUpRequestBody = async (req, res, next) => {
   if (!req.body.name) {
     return res.status(400).send({
@@ -44,15 +52,21 @@ const validateSignUpRequestBody = async (req, res, next) => {
     return res.status(400).send({
       message: "Failed Not a valid email Id ",
     });
+  } else {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        return res.status(400).send({
+          message: "Failed EmailId is already taken",
+        });
+      }
+    } catch (err) {
+      console.log("Some Err happend", err.message);
+      res.status(500).send({
+        message: "Some Internal server error",
+      });
+    }
   }
-
-  const isValidEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   if (!req.body.userType) {
     return res.status(400).send({
