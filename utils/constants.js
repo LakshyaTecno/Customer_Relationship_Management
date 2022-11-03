@@ -10,4 +10,9 @@ module.exports = {
     approved: "APPROVED",
     rejected: "REJECTED",
   },
+  ticketStatsues: {
+    open: "OPEN",
+    closed: "CLOSE",
+    blocked: "BLOCKED",
+  },
 };

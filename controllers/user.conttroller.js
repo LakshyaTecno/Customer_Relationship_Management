@@ -23,3 +23,17 @@ exports.findAll = async (req, res) => {
     });
   }
 };
+
+exports.findUserById = async (req, res) => {
+  try {
+    const user = await User.find({ userId: req.params.id });
+    console.log(req.param.id);
+    console.log("here");
+    return res.status(200).send(objectConverter.userResponse(user));
+  } catch (err) {
+    console.log("Some Err happend", err.message);
+    res.status(500).send({
+      message: "Some Internal server error",
+    });
+  }
+};

@@ -6,4 +6,13 @@ module.exports = (app) => {
     [authJwt.verifyToken, authJwt.isAdmin],
     userController.findAll
   );
+  app.get(
+    "/crm/api/v1/users/:id",
+    [
+      authJwt.verifyToken,
+      authJwt.isValidUserIdInRequestParam,
+      authJwt.isAdminOrOwner,
+    ],
+    userController.findUserById
+  );
 };

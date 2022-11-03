@@ -54,6 +54,14 @@ const userSchema = new mongoose.Schema({
       constants.userStatus.rejected,
     ],
   },
+  ticketsCreated: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    ref: "Ticket",
+  },
+  ticketsAssigned: {
+    type: [mongoose.SchemaTypes.ObjectId],
+    ref: "Ticket",
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
