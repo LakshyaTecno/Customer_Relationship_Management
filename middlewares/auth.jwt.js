@@ -50,16 +50,17 @@ const isValidUserIdInRequestParam = async (req, res, next) => {
     });
   }
 };
-const isAdminOrOwner = (req, res, next) => {
+const isAdminOrOwner = async (req, res, next) => {
   try {
-    if (req.user.userType == constants.userType.admin) {
-      req.user.isAdmin = true; // adds isAdmin tag for further use in controller
-      next();
-    } else if (req.user.userId == req.params.id) {
+    const callingUser = await User.findOne({ userId: req.userId });
+    if (
+      callingUser.userType == constants.userTypes.admin ||
+      callingUser.userId == req.params.id
+    ) {
       next();
     } else {
-      return res.status(403).send({
-        message: "Only admin or owner is allowed to make this call",
+      res.status(403).send({
+        message: "Only admin or the owner is allowed to make this call",
       });
     }
   } catch (err) {

@@ -8,8 +8,9 @@ exports.userResponse = (users) => {
       email: user.email,
       userTypes: user.userType,
       userStatus: user.userStatus,
+      ticketsCreated: user.ticketsCreated,
+      ticketsAssigned: user.ticketsAssigned,
     });
   });
   return userResult;
 };
- 

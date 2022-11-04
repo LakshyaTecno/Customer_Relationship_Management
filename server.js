@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const dbConfig = require("./configs/db.config");
 const User = require("./models/userSchema");
 const bcrypt = require("bcryptjs");
+const constants = require("./utils/constants");
 
 app.use(bodyparser.json());
 
@@ -39,6 +40,7 @@ async function init() {
       password: bcrypt.hashSync("Welcome", 8),
       email: "Lakshya@gmail.com",
       userType: "ADMIN",
+      userStatus: constants.userStatus.approved,
     });
   } catch (err) {
     console.log("err in db initialization", +err.message);

@@ -48,7 +48,11 @@ exports.signin = async (req, res) => {
         message: "Failed! UserId passed is not correct Please pass valid ID",
       });
     }
-
+    if (user.userStatus == constants.userStatus.pending) {
+      return res.status(400).send({
+        message: "Not Yet Approved by the ADMIN",
+      });
+    }
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user.password
